@@ -123,6 +123,12 @@
 
 /* USER CODE BEGIN Private defines */
 
+/* LD4 -> Green Led
+ * LD3 -> Orange Led
+ * LD5 -> Red Led
+ * LD6 -> Blue Led
+ */
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

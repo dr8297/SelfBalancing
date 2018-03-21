@@ -65,7 +65,7 @@
 /**
  * Includes
  */
-#include "stm32f4xx.h"
+#include "stm32f4xx_hal.h"
 /*#include "stm32f4xx_rcc.h" */
 /*#include "stm32f4xx_gpio.h"*/
 #include "defines.h"
@@ -79,14 +79,14 @@
 
 /* CS pin on STM32F4-Discovery board */
 #ifndef LIS302DL_LIS3DSH_CS_PIN
-#define LIS302DL_LIS3DSH_CS_RCC				RCC_AHB1Periph_GPIOE
+//#define LIS302DL_LIS3DSH_CS_RCC				RCC_AHB1Periph_GPIOE
 #define LIS302DL_LIS3DSH_CS_PORT			GPIOE
-#define LIS302DL_LIS3DSH_CS_PIN				GPIO_Pin_3
+#define LIS302DL_LIS3DSH_CS_PIN				CS_I2C_SPI_Pin
 #endif
 
 /* CS pin settings */
-#define LIS302DL_LIS3DSH_CS_LOW				LIS302DL_LIS3DSH_CS_PORT->BSRRH = LIS302DL_LIS3DSH_CS_PIN
-#define LIS302DL_LIS3DSH_CS_HIGH			LIS302DL_LIS3DSH_CS_PORT->BSRRL = LIS302DL_LIS3DSH_CS_PIN
+#define LIS302DL_LIS3DSH_CS_LOW				LIS302DL_LIS3DSH_CS_PORT->BSRR = LIS302DL_LIS3DSH_CS_PIN
+#define LIS302DL_LIS3DSH_CS_HIGH			LIS302DL_LIS3DSH_CS_PORT->BSRR = LIS302DL_LIS3DSH_CS_PIN
 
 /* Who I am values */
 #define LIS302DL_ID							0x3B

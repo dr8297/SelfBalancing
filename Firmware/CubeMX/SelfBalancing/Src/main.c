@@ -41,6 +41,12 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
+
+/* LD4 -> Green Led
+ * LD3 -> Orange Led
+ * LD5 -> Red Led
+ * LD6 -> Blue Led
+ */
 #include "defines.h"
 /*#include "tm_stm32f4_disco.h" */
 /*#include "tm_stm32f4_delay.h" */
@@ -110,19 +116,19 @@ int main(void)
    /* Detect proper device */
    if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS302DL) {
        /* Turn on GREEN and RED */
-       TM_DISCO_LedOn(LED_GREEN | LED_RED);
+       TM_DISCO_LedOn(LD4_Pin | LD5_Pin);
        /* Initialize LIS302DL */
        TM_LIS302DL_LIS3DSH_Init(TM_LIS302DL_Sensitivity_2_3G, TM_LIS302DL_Filter_2Hz);
    } else if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS3DSH) {
        /* Turn on BLUE and ORANGE */
-       TM_DISCO_LedOn(LED_BLUE | LED_ORANGE);
+       TM_DISCO_LedOn(LD6_Pin | LD3_Pin);
        /* Initialize LIS3DSH */
        TM_LIS302DL_LIS3DSH_Init(TM_LIS3DSH_Sensitivity_2G, TM_LIS3DSH_Filter_800Hz);
    } else {
        /* Device is not recognized */
 
        /* Turn on ALL leds */
-       TM_DISCO_LedOn(LED_GREEN | LED_RED | LED_BLUE | LED_ORANGE);
+       TM_DISCO_LedOn(LD4_Pin | LD5_Pin | LD6_Pin | LD3_Pin);
 
        /* Infinite loop */
        while (1);
@@ -147,25 +153,25 @@ int main(void)
 	       /* Turn LEDS on or off */
 	       /* Check X axes */
 	       if (Axes_Data.X > 200) {
-	           TM_DISCO_LedOn(LED_RED);
+	           TM_DISCO_LedOn(LD5_Pin);
 	       } else {
-	           TM_DISCO_LedOff(LED_RED);
+	           TM_DISCO_LedOff(LD5_Pin);
 	       }
 	       if (Axes_Data.X < -200) {
-	           TM_DISCO_LedOn(LED_GREEN);
+	           TM_DISCO_LedOn(LD4_Pin);
 	       } else {
-	           TM_DISCO_LedOff(LED_GREEN);
+	           TM_DISCO_LedOff(LD4_Pin);
 	       }
 	       /* Check Y axes */
 	       if (Axes_Data.Y > 200) {
-	           TM_DISCO_LedOn(LED_ORANGE);
+	           TM_DISCO_LedOn(LD3_Pin);
 	       } else {
-	           TM_DISCO_LedOff(LED_ORANGE);
+	           TM_DISCO_LedOff(LD3_Pin);
 	       }
 	       if (Axes_Data.Y < -200) {
-	           TM_DISCO_LedOn(LED_BLUE);
+	           TM_DISCO_LedOn(LD6_Pin);
 	       } else {
-	           TM_DISCO_LedOff(LED_BLUE);
+	           TM_DISCO_LedOff(LD6_Pin);
 	       }
 
   }
