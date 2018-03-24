@@ -35,9 +35,10 @@ float TM_LIS3DSH_INT_Sensitivity;
 TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_Detect(void) {
 	uint8_t id;
 	/* Delay on power up */
-	TM_LIS302DL_LIS3DSH_INT_Delay();
+	//TM_LIS302DL_LIS3DSH_INT_Delay(); #I'll use a HAL delay
+	HAL_Delay(100);
 	/* Init SPI */
-	TM_LIS302DL_LIS3DSH_INT_InitPins();
+	//TM_LIS302DL_LIS3DSH_INT_InitPins(); #The cube MX function should init the pins
 	/* Get ID */
 	TM_LIS302DL_LIS3DSH_INT_ReadSPI(&id, LIS302DL_LIS3DSH_REG_WHO_I_AM, 1);
 	/* Check device */
@@ -98,6 +99,8 @@ TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_ReadAxes(TM_LIS302DL_LIS3DSH_t*
 }
 
 /* Private */
+
+/*
 void TM_LIS302DL_LIS3DSH_INT_InitPins(void) {
 	GPIO_InitTypeDef GPIO_InitStruct;
 	static uint8_t initialized = 0;
@@ -105,26 +108,27 @@ void TM_LIS302DL_LIS3DSH_INT_InitPins(void) {
 		return;
 	}
 	
-	/* Initialize SPI */
+	/* Initialize SPI
 	TM_SPI_Init(LIS302DL_LIS3DSH_SPI, LIS302DL_LIS3DSH_SPI_PINSPACK);
 	
-	/* Enable clock for CS port */
+	/* Enable clock for CS port
 	RCC_AHB1PeriphClockCmd(LIS302DL_LIS3DSH_CS_RCC, ENABLE);
 	
-	/* Configure CS pin */
-	GPIO_InitStruct.GPIO_Pin = LIS302DL_LIS3DSH_CS_PIN;
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
-	/* GPIO Init */
+	/* Configure CS pin
+	GPIO_InitStruct.Pin = LIS302DL_LIS3DSH_CS_PIN;
+	GPIO_InitStruct.Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.OType = GPIO_OType_PP;
+	GPIO_InitStruct.PuPd = GPIO_PuPd_UP;
+	GPIO_InitStruct.Speed = GPIO_Speed_25MHz;
+	/* GPIO Init
 	GPIO_Init(LIS302DL_LIS3DSH_CS_PORT, &GPIO_InitStruct);
 	
-	/* CS HIGH */
+	/* CS HIGH
 	LIS302DL_LIS3DSH_CS_HIGH;
 	
 	initialized = 1;
 }
+*/
 
 void TM_LIS302DL_LIS3DSH_INT_WriteSPI(uint8_t* data, uint8_t addr, uint8_t count) {
 	/* Start SPI transmission */
