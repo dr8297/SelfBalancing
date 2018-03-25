@@ -41,6 +41,8 @@ TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_Detect(void) {
 	//TM_LIS302DL_LIS3DSH_INT_InitPins(); #The cube MX function should init the pins
 	/* Get ID */
 	TM_LIS302DL_LIS3DSH_INT_ReadSPI(&id, LIS302DL_LIS3DSH_REG_WHO_I_AM, 1);
+
+
 	/* Check device */
 	if (id == LIS302DL_ID) {
 		/* Set device */
@@ -151,7 +153,7 @@ void TM_LIS302DL_LIS3DSH_INT_WriteSPI(uint8_t* data, uint8_t addr, uint8_t count
 
 void TM_LIS302DL_LIS3DSH_INT_ReadSPI(uint8_t* data, uint8_t addr, uint8_t count) {
 	/* Start SPI transmission */
-	LIS302DL_LIS3DSH_CS_LOW;
+	/*LIS302DL_LIS3DSH_CS_LOW;
 	
 	/* Add read bit */
 	addr |= 0x80;
@@ -161,13 +163,18 @@ void TM_LIS302DL_LIS3DSH_INT_ReadSPI(uint8_t* data, uint8_t addr, uint8_t count)
 		addr |= 0x40;
 	}
 	
+	// read address
+	HAL_SPI_Transmit(*hspi1,*addr, (uint16_t) 1, (uint32_t) 100);
+
+
+
 	/* Send address */
-	TM_SPI_Send(LIS302DL_LIS3DSH_SPI, addr);
+	/*TM_SPI_Send(LIS302DL_LIS3DSH_SPI, addr);
 	/* Receive data */
-	TM_SPI_ReadMulti(LIS302DL_LIS3DSH_SPI, data, 0x00, count);
-	
+	//TM_SPI_ReadMulti(LIS302DL_LIS3DSH_SPI, data, 0x00, count);
+	HAL_SPI_Read(*hspi1, *addr)
 	/* Stop SPI transmission */
-	LIS302DL_LIS3DSH_CS_HIGH;
+	//LIS302DL_LIS3DSH_CS_HIGH;
 }
 
 void TM_LIS302DL_LIS3DSH_INT_InitLIS3DSH(TM_LIS302DL_LIS3DSH_Sensitivity_t Sensitivity, TM_LIS302DL_LIS3DSH_Filter_t Filter) {
