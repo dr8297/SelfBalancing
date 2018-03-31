@@ -158,28 +158,29 @@ void TM_LIS302DL_LIS3DSH_INT_WriteSPI(uint8_t* data, uint8_t addr, uint8_t count
 void TM_LIS302DL_LIS3DSH_INT_ReadSPI(uint8_t* data, uint8_t addr, uint8_t count) {
 	/* Start SPI transmission */
 	uint8_t  data1[2];
-	data[0]=0;
-	data[1]=0;
+	//uint8_t local_addr=addr;
+	data1[0]=0;
+	data1[1]=0;
 
 	LIS302DL_LIS3DSH_CS_LOW;
 	//HAL_GPIO_WritePin(CS_SPI_GPIO_Port, CS_SPI_Pin, GPIO_PIN_RESET);
 	/* Add read bit */
-	addr |= 0x80;
+	addr |= 0x80; // 0b100 00000 the debuger shows that addr is not being modified by the software
 	if (count > 1) {
 		/* Add autoincrement bit */
 		addr |= 0x40;
 	}
 	
 	// read address
-	HAL_SPI_Transmit(&hspi1, &addr, (uint16_t) 1, (uint32_t) 100);
+	HAL_SPI_TransmitReceive(&hspi1, &addr, &data1, (uint16_t) 2, (uint32_t) 100);
 	/* Send address */
 	/*TM_SPI_Send(LIS302DL_LIS3DSH_SPI, addr);*/
-	LIS302DL_LIS3DSH_CS_HIGH;
-	HAL_Delay(10);
-	LIS302DL_LIS3DSH_CS_LOW;
+	//LIS302DL_LIS3DSH_CS_HIGH;
+	//HAL_Delay(10);
+	//LIS302DL_LIS3DSH_CS_LOW;
 	/* Receive data */
 	//TM_SPI_ReadMulti(LIS302DL_LIS3DSH_SPI, data, 0x00, count);
-	HAL_SPI_Receive(&hspi1, data1, (uint16_t) 1, (uint32_t) 100);
+	//HAL_SPI_Receive(&hspi1, data1, (uint16_t) 1, (uint32_t) 100);
 	/* Stop SPI transmission */
 	LIS302DL_LIS3DSH_CS_HIGH;
 }
