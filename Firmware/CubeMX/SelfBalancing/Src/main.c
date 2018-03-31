@@ -81,6 +81,8 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
+	TM_LIS302DL_LIS3DSH_Device_t status_gyro;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -119,28 +121,30 @@ int main(void)
    //TM_DISCO_LedInit(); #CubeMX should have already set the pins. I am using the default setting of the Discovery board
 
    /* Detect proper device */
-   if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS302DL) {
+
+   status_gyro = TM_LIS302DL_LIS3DSH_Detect();
+   //if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS302DL) {
        /* Turn on GREEN and RED */
-       TM_DISCO_LedOn(LD4_Pin | LD5_Pin);
+       //TM_DISCO_LedOn(LD4_Pin | LD5_Pin);
        /* Initialize LIS302DL */
-       TM_LIS302DL_LIS3DSH_Init(TM_LIS302DL_Sensitivity_2_3G, TM_LIS302DL_Filter_2Hz);
-   } else if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS3DSH) {
+       //TM_LIS302DL_LIS3DSH_Init(TM_LIS302DL_Sensitivity_2_3G, TM_LIS302DL_Filter_2Hz);
+
+   //} else if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS3DSH) {
        /* Turn on BLUE and ORANGE */
-       TM_DISCO_LedOn(LD6_Pin | LD3_Pin);
+      // TM_DISCO_LedOn(LD6_Pin | LD3_Pin);
        /* Initialize LIS3DSH */
-       TM_LIS302DL_LIS3DSH_Init(TM_LIS3DSH_Sensitivity_2G, TM_LIS3DSH_Filter_800Hz);
-   } else {
+       //TM_LIS302DL_LIS3DSH_Init(TM_LIS3DSH_Sensitivity_2G, TM_LIS3DSH_Filter_800Hz);
+   //} else {
        /* Device is not recognized */
-
        /* Turn on ALL leds */
-       TM_DISCO_LedOn(LD4_Pin | LD5_Pin | LD6_Pin | LD3_Pin);
-
+       //TM_DISCO_LedOn(LD4_Pin | LD5_Pin | LD6_Pin | LD3_Pin);
        /* Infinite loop */
-       while (1);
-   }
+
+       //while (1);
+  // }
 
    /* Delay for 2 seconds */
-   Delayms(2000);
+   //HAL_Delay(2000);
 
 
   /* USER CODE END 2 */
@@ -152,12 +156,31 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	    /* Read axes data from initialized accelerometer */
-	       TM_LIS302DL_LIS3DSH_ReadAxes(&Axes_Data);
 
+	  if (status_gyro == TM_LIS302DL_LIS3DSH_Device_LIS302DL) {
+
+		  HAL_GPIO_TogglePin(GPIOD, LD3_Pin);
+		  HAL_Delay(100);
+
+	  } else if (status_gyro == TM_LIS302DL_LIS3DSH_Device_LIS3DSH) {
+
+		  HAL_GPIO_TogglePin(GPIOD, LD4_Pin);
+		  HAL_Delay(100);
+
+	  } else
+	  {
+		  HAL_GPIO_TogglePin(GPIOD, LD5_Pin);
+		  HAL_Delay(100);
+	  };
+
+	    /* Read axes data from initialized accelerometer */
+
+	  /*
+	       TM_LIS302DL_LIS3DSH_ReadAxes(&Axes_Data);
 	       /* Turn LEDS on or off */
 	       /* Check X axes */
-	       if (Axes_Data.X > 200) {
+
+	  /*     if (Axes_Data.X > 200) {
 	           TM_DISCO_LedOn(LD5_Pin);
 	       } else {
 	           TM_DISCO_LedOff(LD5_Pin);
@@ -168,6 +191,8 @@ int main(void)
 	           TM_DISCO_LedOff(LD4_Pin);
 	       }
 	       /* Check Y axes */
+
+	  /*
 	       if (Axes_Data.Y > 200) {
 	           TM_DISCO_LedOn(LD3_Pin);
 	       } else {
@@ -178,7 +203,7 @@ int main(void)
 	       } else {
 	           TM_DISCO_LedOff(LD6_Pin);
 	       }
-
+*/
   }
   /* USER CODE END 3 */
 
@@ -248,7 +273,7 @@ static void MX_SPI1_Init(void)
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
@@ -297,21 +322,21 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(CS_SPI_GPIO_Port, CS_SPI_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
+  HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin|LD6_Pin 
                           |GPIO_PIN_4, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PE3 */
-  GPIO_InitStruct.Pin = GPIO_PIN_3;
+  /*Configure GPIO pin : CS_SPI_Pin */
+  GPIO_InitStruct.Pin = CS_SPI_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+  HAL_GPIO_Init(CS_SPI_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC0 */
   GPIO_InitStruct.Pin = GPIO_PIN_0;
@@ -356,9 +381,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PD12 PD13 PD14 PD15 
+  /*Configure GPIO pins : LD4_Pin LD3_Pin LD5_Pin LD6_Pin 
                            PD4 */
-  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
+  GPIO_InitStruct.Pin = LD4_Pin|LD3_Pin|LD5_Pin|LD6_Pin 
                           |GPIO_PIN_4;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;

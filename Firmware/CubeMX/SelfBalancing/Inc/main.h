@@ -47,6 +47,17 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define CS_SPI_Pin GPIO_PIN_3
+#define CS_SPI_GPIO_Port GPIOE
+#define LD4_Pin GPIO_PIN_12
+#define LD4_GPIO_Port GPIOD
+#define LD3_Pin GPIO_PIN_13
+#define LD3_GPIO_Port GPIOD
+#define LD5_Pin GPIO_PIN_14
+#define LD5_GPIO_Port GPIOD
+#define LD6_Pin GPIO_PIN_15
+#define LD6_GPIO_Port GPIOD
+
 /* ########################## Assert Selection ############################## */
 /**
   * @brief Uncomment the line below to expanse the "assert_param" macro in the 

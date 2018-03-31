@@ -19,6 +19,7 @@
 #include "tm_stm32f4_lis302dl_lis3dsh.h"
 
 /* Private */
+extern SPI_HandleTypeDef hspi1; // added by DRM to link this function to the main
 extern void TM_LIS302DL_LIS3DSH_INT_WriteSPI(uint8_t* data, uint8_t addr, uint8_t count);
 extern void TM_LIS302DL_LIS3DSH_INT_ReadSPI(uint8_t* data, uint8_t addr, uint8_t count);
 extern void TM_LIS302DL_LIS3DSH_INT_InitPins(void);
@@ -32,7 +33,7 @@ TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_INT_Device = TM_LIS302DL_LIS3DS
 float TM_LIS3DSH_INT_Sensitivity;
 
 /* Public */
-TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_Detect(void) {
+TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_Detect() {
 	uint8_t id;
 	/* Delay on power up */
 	//TM_LIS302DL_LIS3DSH_INT_Delay(); #I'll use a HAL delay
@@ -62,7 +63,7 @@ TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_Detect(void) {
 
 TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_Init(TM_LIS302DL_LIS3DSH_Sensitivity_t Sensitivity, TM_LIS302DL_LIS3DSH_Filter_t Filter) {
 	/* Init pinout and SPI */
-	TM_LIS302DL_LIS3DSH_INT_InitPins();
+	//TM_LIS302DL_LIS3DSH_INT_InitPins();
 	/* Some delay */
 	TM_LIS302DL_LIS3DSH_INT_Delay();
 	/* Detect proper device and init it */
@@ -134,7 +135,10 @@ void TM_LIS302DL_LIS3DSH_INT_InitPins(void) {
 
 void TM_LIS302DL_LIS3DSH_INT_WriteSPI(uint8_t* data, uint8_t addr, uint8_t count) {
 	/* Start SPI transmission */
-	LIS302DL_LIS3DSH_CS_LOW;
+	//LIS302DL_LIS3DSH_CS_LOW;
+
+	  HAL_GPIO_WritePin(CS_SPI_GPIO_Port, CS_SPI_Pin, GPIO_PIN_RESET);
+
 	
 	if (count > 1 && TM_LIS302DL_LIS3DSH_INT_Device == TM_LIS302DL_LIS3DSH_Device_LIS302DL) {
 		/* Add autoincrement bit */
@@ -143,9 +147,9 @@ void TM_LIS302DL_LIS3DSH_INT_WriteSPI(uint8_t* data, uint8_t addr, uint8_t count
 	}
 	
 	/* Send address */
-	TM_SPI_Send(LIS302DL_LIS3DSH_SPI, addr);
+	//TM_SPI_Send(LIS302DL_LIS3DSH_SPI, addr);
 	/* Send data */
-	TM_SPI_WriteMulti(LIS302DL_LIS3DSH_SPI, data, count);
+	//TM_SPI_WriteMulti(LIS302DL_LIS3DSH_SPI, data, count);
 	
 	/* Stop SPI transmission */
 	LIS302DL_LIS3DSH_CS_HIGH;
@@ -153,28 +157,31 @@ void TM_LIS302DL_LIS3DSH_INT_WriteSPI(uint8_t* data, uint8_t addr, uint8_t count
 
 void TM_LIS302DL_LIS3DSH_INT_ReadSPI(uint8_t* data, uint8_t addr, uint8_t count) {
 	/* Start SPI transmission */
-	/*LIS302DL_LIS3DSH_CS_LOW;
-	
+	uint8_t  data1[2];
+	data[0]=0;
+	data[1]=0;
+
+	LIS302DL_LIS3DSH_CS_LOW;
+	//HAL_GPIO_WritePin(CS_SPI_GPIO_Port, CS_SPI_Pin, GPIO_PIN_RESET);
 	/* Add read bit */
 	addr |= 0x80;
-	
 	if (count > 1) {
 		/* Add autoincrement bit */
 		addr |= 0x40;
 	}
 	
 	// read address
-	HAL_SPI_Transmit(*hspi1,*addr, (uint16_t) 1, (uint32_t) 100);
-
-
-
+	HAL_SPI_Transmit(&hspi1, &addr, (uint16_t) 1, (uint32_t) 100);
 	/* Send address */
-	/*TM_SPI_Send(LIS302DL_LIS3DSH_SPI, addr);
+	/*TM_SPI_Send(LIS302DL_LIS3DSH_SPI, addr);*/
+	LIS302DL_LIS3DSH_CS_HIGH;
+	HAL_Delay(10);
+	LIS302DL_LIS3DSH_CS_LOW;
 	/* Receive data */
 	//TM_SPI_ReadMulti(LIS302DL_LIS3DSH_SPI, data, 0x00, count);
-	HAL_SPI_Read(*hspi1, *addr)
+	HAL_SPI_Receive(&hspi1, data1, (uint16_t) 1, (uint32_t) 100);
 	/* Stop SPI transmission */
-	//LIS302DL_LIS3DSH_CS_HIGH;
+	LIS302DL_LIS3DSH_CS_HIGH;
 }
 
 void TM_LIS302DL_LIS3DSH_INT_InitLIS3DSH(TM_LIS302DL_LIS3DSH_Sensitivity_t Sensitivity, TM_LIS302DL_LIS3DSH_Filter_t Filter) {

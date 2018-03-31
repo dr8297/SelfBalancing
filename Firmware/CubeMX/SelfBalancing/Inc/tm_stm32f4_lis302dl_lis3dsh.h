@@ -69,7 +69,7 @@
 /*#include "stm32f4xx_rcc.h" */
 /*#include "stm32f4xx_gpio.h"*/
 #include "defines.h"
-#include "tm_stm32f4_spi.h"
+// #include "tm_stm32f4_spi.h"
 
 /* SPI on STM32F4-Discovery board */
 #ifndef LIS302DL_LIS3DSH_SPI
@@ -81,12 +81,12 @@
 #ifndef LIS302DL_LIS3DSH_CS_PIN
 //#define LIS302DL_LIS3DSH_CS_RCC				RCC_AHB1Periph_GPIOE
 #define LIS302DL_LIS3DSH_CS_PORT			GPIOE
-#define LIS302DL_LIS3DSH_CS_PIN				CS_I2C_SPI_Pin
+#define LIS302DL_LIS3DSH_CS_PIN				CS_SPI_Pin
 #endif
 
 /* CS pin settings */
-#define LIS302DL_LIS3DSH_CS_LOW				LIS302DL_LIS3DSH_CS_PORT->BSRR = LIS302DL_LIS3DSH_CS_PIN
-#define LIS302DL_LIS3DSH_CS_HIGH			LIS302DL_LIS3DSH_CS_PORT->BSRR = LIS302DL_LIS3DSH_CS_PIN
+#define LIS302DL_LIS3DSH_CS_LOW				LIS302DL_LIS3DSH_CS_PORT-> ODR &= ~LIS302DL_LIS3DSH_CS_PIN
+#define LIS302DL_LIS3DSH_CS_HIGH			LIS302DL_LIS3DSH_CS_PORT-> ODR |= LIS302DL_LIS3DSH_CS_PIN
 
 /* Who I am values */
 #define LIS302DL_ID							0x3B
@@ -277,7 +277,7 @@ typedef struct {
  * 
  * Member of TM_LIS302DL_LIS3DSH_Device_t is returned
  */
-extern TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_Detect(void);
+extern TM_LIS302DL_LIS3DSH_Device_t TM_LIS302DL_LIS3DSH_Detect();
 
 /**
  * Initialize proper device

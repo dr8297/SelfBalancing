@@ -23,7 +23,8 @@ Src/stm32f4xx_hal_msp.o: ../Src/stm32f4xx_hal_msp.c \
  C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h \
  C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h \
  C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
- C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+ C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
+ C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 
 C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 
@@ -74,3 +75,5 @@ C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drive
 C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 
 C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
+
+C:/Users/David/Documents/STM32/SelfBalancing/Firmware/CubeMX/SelfBalancing/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h:
