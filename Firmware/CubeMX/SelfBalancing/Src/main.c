@@ -41,7 +41,7 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-
+SPI_HandleTypeDef hspi1;
 /* LD4 -> Green Led
  * LD3 -> Orange Led
  * LD5 -> Red Led
@@ -55,7 +55,9 @@
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-SPI_HandleTypeDef hspi1;
+
+
+
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -123,25 +125,26 @@ int main(void)
    /* Detect proper device */
 
    status_gyro = TM_LIS302DL_LIS3DSH_Detect();
-   //if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS302DL) {
+   if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS302DL) {
        /* Turn on GREEN and RED */
        //TM_DISCO_LedOn(LD4_Pin | LD5_Pin);
        /* Initialize LIS302DL */
-       //TM_LIS302DL_LIS3DSH_Init(TM_LIS302DL_Sensitivity_2_3G, TM_LIS302DL_Filter_2Hz);
+       TM_LIS302DL_LIS3DSH_Init(TM_LIS302DL_Sensitivity_2_3G, TM_LIS302DL_Filter_2Hz);
 
-   //} else if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS3DSH) {
+   } else if (TM_LIS302DL_LIS3DSH_Detect() == TM_LIS302DL_LIS3DSH_Device_LIS3DSH) {
        /* Turn on BLUE and ORANGE */
       // TM_DISCO_LedOn(LD6_Pin | LD3_Pin);
        /* Initialize LIS3DSH */
-       //TM_LIS302DL_LIS3DSH_Init(TM_LIS3DSH_Sensitivity_2G, TM_LIS3DSH_Filter_800Hz);
-   //} else {
+       TM_LIS302DL_LIS3DSH_Init(TM_LIS3DSH_Sensitivity_2G, TM_LIS3DSH_Filter_800Hz);
+   } else {
        /* Device is not recognized */
        /* Turn on ALL leds */
        //TM_DISCO_LedOn(LD4_Pin | LD5_Pin | LD6_Pin | LD3_Pin);
+	   HAL_GPIO_TogglePin(GPIOD, LD5_Pin);
        /* Infinite loop */
 
        //while (1);
-  // }
+   }
 
    /* Delay for 2 seconds */
    //HAL_Delay(2000);

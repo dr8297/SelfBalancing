@@ -272,6 +272,13 @@ typedef struct {
 	int16_t Z;
 } TM_LIS302DL_LIS3DSH_t;
 
+typedef enum {
+
+	write_spi,
+	read_spi
+
+} spi_mode;
+
 /**
  * Detect LIS302DL or LIS3DSH device connected on F4-Discovery board
  * 
