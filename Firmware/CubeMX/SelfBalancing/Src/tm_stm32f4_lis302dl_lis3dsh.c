@@ -177,7 +177,7 @@ void TM_LIS302DL_LIS3DSH_INT_ReadSPI(uint8_t* data, uint8_t* write_buffer, uint8
 	if (count > 1) 		*write_buffer |= 0x40; 		/* Add autoincrement bit */
 	
 	// Transmit and Receive address
-	HAL_SPI_TransmitReceive(&hspi1, (uint8_t  *) write_buffer, (uint8_t *) &data1, size, timeout);
+	HAL_SPI_TransmitReceive(&hspi1, (uint8_t  *) write_buffer, (uint8_t *) data1, size, timeout);
 	/* Send address */
 	/*TM_SPI_Send(LIS302DL_LIS3DSH_SPI, addr);*/
 	//LIS302DL_LIS3DSH_CS_HIGH;
@@ -308,20 +308,17 @@ void TM_LIS302DL_LIS3DSH_INT_InitLIS302DL(TM_LIS302DL_LIS3DSH_Sensitivity_t Sens
 }
 
 void TM_LIS3DSH_INT_ReadAxes(TM_LIS302DL_LIS3DSH_t *Axes_Data) {
-	spi_mode mode=write_spi;
-	int8_t buffer[6];
+	spi_mode mode=read_spi;
+	int8_t buffer[7];
+	int8_t address_buffer[6]={LIS3DSH_OUT_X_L_ADDR, LIS3DSH_OUT_X_H_ADDR, LIS3DSH_OUT_Y_L_ADDR, LIS3DSH_OUT_Y_H_ADDR, \
+			LIS3DSH_OUT_Z_L_ADDR, LIS3DSH_OUT_Z_H_ADDR};
 
-	int8_t write_buffer=LIS3DSH_OUT_X_L_ADDR;
-
-	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t *) &buffer[0], (uint8_t *) &write_buffer , 1,mode);
-
-	// you have to edit it later on
-
-	/*TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t*)&buffer[1], LIS3DSH_OUT_X_H_ADDR, 1,mode);
-	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t*)&buffer[2], LIS3DSH_OUT_Y_L_ADDR, 1,mode);
-	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t*)&buffer[3], LIS3DSH_OUT_Y_H_ADDR, 1,mode);
-	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t*)&buffer[4], LIS3DSH_OUT_Z_L_ADDR, 1,mode);
-	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t*)&buffer[5], LIS3DSH_OUT_Z_H_ADDR, 1,mode); */
+	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t *)&buffer[0], (uint8_t *) &address_buffer[0] , 1,mode);
+	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t *) &buffer[1], (uint8_t *) &address_buffer[1] , 1,mode);
+	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t *) &buffer[2], (uint8_t *) &address_buffer[2] , 1,mode);
+	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t *) &buffer[3], (uint8_t *) &address_buffer[3] , 1,mode);
+	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t *) &buffer[4], (uint8_t *) &address_buffer[4] , 1,mode);
+	TM_LIS302DL_LIS3DSH_INT_ReadSPI((uint8_t *) &buffer[5], (uint8_t *) &address_buffer[5] , 1,mode); /*
 	/* Set axes */
 	Axes_Data->X = (int16_t)((buffer[1] << 8) + buffer[0]) * TM_LIS3DSH_INT_Sensitivity;
 	Axes_Data->Y = (int16_t)((buffer[3] << 8) + buffer[2]) * TM_LIS3DSH_INT_Sensitivity;

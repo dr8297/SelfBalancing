@@ -160,6 +160,7 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 
+	  /*
 	  if (status_gyro == TM_LIS302DL_LIS3DSH_Device_LIS302DL) {
 
 		  HAL_GPIO_TogglePin(GPIOD, LD3_Pin);
@@ -174,39 +175,39 @@ int main(void)
 	  {
 		  HAL_GPIO_TogglePin(GPIOD, LD5_Pin);
 		  HAL_Delay(100);
-	  };
+	  }; */
 
 	    /* Read axes data from initialized accelerometer */
 
-	  /*
+
 	       TM_LIS302DL_LIS3DSH_ReadAxes(&Axes_Data);
 	       /* Turn LEDS on or off */
 	       /* Check X axes */
 
-	  /*     if (Axes_Data.X > 200) {
-	           TM_DISCO_LedOn(LD5_Pin);
+	       if (Axes_Data.X > 200) {
+	           HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_SET);
 	       } else {
-	           TM_DISCO_LedOff(LD5_Pin);
+	           HAL_GPIO_WritePin(GPIOD,LD5_Pin, GPIO_PIN_RESET);
 	       }
 	       if (Axes_Data.X < -200) {
-	           TM_DISCO_LedOn(LD4_Pin);
+	    	   HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_SET);
 	       } else {
-	           TM_DISCO_LedOff(LD4_Pin);
+	    	   HAL_GPIO_WritePin(GPIOD,LD4_Pin, GPIO_PIN_RESET);
 	       }
 	       /* Check Y axes */
 
-	  /*
+
 	       if (Axes_Data.Y > 200) {
-	           TM_DISCO_LedOn(LD3_Pin);
+	    	   HAL_GPIO_WritePin(GPIOD, LD3_Pin, GPIO_PIN_SET);
 	       } else {
-	           TM_DISCO_LedOff(LD3_Pin);
+	    	   HAL_GPIO_WritePin(GPIOD,LD3_Pin, GPIO_PIN_RESET);
 	       }
 	       if (Axes_Data.Y < -200) {
-	           TM_DISCO_LedOn(LD6_Pin);
+	    	   HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_SET);
 	       } else {
-	           TM_DISCO_LedOff(LD6_Pin);
+	    	   HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_RESET);
 	       }
-*/
+
   }
   /* USER CODE END 3 */
 
